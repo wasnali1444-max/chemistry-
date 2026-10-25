@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلة بلورة الثلج | مشروع الكيمياء</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --ice: #91e5ff;
+  --purple: #aaa6ff;
+  --text: #edfaff;
+  --muted: #b9d1e9;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: white;
+  font-family: 'Cairo', Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 10%, #315f9b 0%, transparent 38%),
+    radial-gradient(ellipse at 90% 80%, #34488b 0%, transparent 40%),
+    linear-gradient(145deg, #07182e, #102e52 55%, #171d48);
+  overflow-x: hidden;
+}
+
+button { font-family: inherit; }
+
+.snow {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flake {
+  position: absolute;
+  top: -30px;
+  color: #dff7ff;
+  opacity: .6;
+  animation: snowfall linear infinite;
+}
+
+@keyframes snowfall {
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 92%);
+  margin: auto;
+  padding: 25px 0 35px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 45px;
+}
+
+.logo {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo span { color: var(--ice); }
+
+.pill {
+  padding: 8px 15px;
+  border: 1px solid #ffffff28;
+  background: #ffffff0d;
+  border-radius: 30px;
+  font-size: 12px;
+  color: #d8edff;
+}
+
+.hero { text-align: center; }
+
+.eyebrow {
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: clamp(34px, 7vw, 58px);
+  font-weight: 900;
+  line-height: 1.5;
+  background: linear-gradient(90deg, #fff, #9ee5ff, #c8c6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  max-width: 550px;
+  margin: auto;
+  color: #c0d5ed;
+  font-size: 14px;
+  line-height: 2.1;
+}
+
+.credit {
+  margin-top: 9px;
+  font-size: 12px;
+  color: #d6eaff;
+}
+
+.start {
+  margin-top: 25px;
+  padding: 14px 35px;
+  border: 1px solid #bcefff80;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #83d8ff, #aaa4ff);
+  color: #102344;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 0 30px #83d8ff30;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px #83d8ff60;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.stat {
+  padding: 15px 8px;
+  border: 1px solid #ffffff18;
+  border-radius: 18px;
+  background: #ffffff0b;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.stat small {
+  display: block;
+  color: #a9c5e4;
+  font-size: 11px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 23px;
+  margin-top: 4px;
+}
+
+.progress-wrap { margin: 25px 0; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  color: #c0d5ed;
+  font-size: 12px;
+  margin-bottom: 9px;
+}
+
+.progress {
+  height: 7px;
+  border-radius: 20px;
+  background: #ffffff16;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #77dfff, #a8a2ff);
+  border-radius: 20px;
+  transition: width .4s;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0 15px;
+}
+
+.section-heading h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.section-heading span {
+  color: #a9c5e4;
+  font-size: 11px;
+}
+
+.snow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.crystal {
+  min-height: 145px;
+  border: 1px solid #b8eaff35;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #ffffff14, #8bcfff08);
+  color: white;
+  cursor: pointer;
+  transition: transform .25s, border-color .25s, background .25s;
+  overflow: hidden;
+}
+
+.crystal:hover:not(:disabled) {
+  transform: translateY(-5px);
+  border-color: var(--ice);
+  background: #9ee5ff18;
+}
+
+.crystal:disabled { cursor: default; }
+
+.crystal-icon {
+  display: block;
+  font-size: 43px;
+  filter: drop-shadow(0 0 12px #8de7ff66);
+}
+
+.crystal-label {
+  display: block;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.crystal-status {
+  display: block;
+  color: #aac8e9;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.crystal.done {
+  background: #8fffd014;
+  border-color: #8fffd05c;
+}
+
+.crystal.done .crystal-icon { filter: none; }
+
+.hint {
+  text-align: center;
+  color: #aac8e9;
+  font-size: 12px;
+  line-height: 2;
+  margin: 22px 0;
+}
+
+.footer {
+  text-align: center;
+  color: #a8c5e4;
+  font-size: 11px;
+  line-height: 2.2;
+  margin-top: 35px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff18;
+}
+
+/* نافذة الأسئلة */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: #030c1cba;
+  backdrop-filter: blur(9px);
+}
+
+.overlay.show { display: flex; }
+
+.modal {
+  width: min(480px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  border: 1px solid #a6e4ff45;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #183b61, #111d40);
+  box-shadow: 0 25px 90px #0006;
+  animation: pop .2s ease-out;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-number {
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.close {
+  border: 0;
+  background: #ffffff12;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.question-icon {
+  text-align: center;
+  font-size: 46px;
+  margin: 15px 0 5px;
+}
+
+.question {
+  font-size: 19px;
+  line-height: 1.9;
+  text-align: center;
+  margin: 8px 0 20px;
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+}
+
+.answer {
+  padding: 12px 14px;
+  color: #eaf6ff;
+  font-size: 13px;
+  text-align: right;
+  border: 1px solid #ffffff20;
+  border-radius: 13px;
+  background: #ffffff08;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.answer:hover:not(:disabled) {
+  border-color: var(--ice);
+  background: #87dfff16;
+}
+
+.answer.correct {
+  background: #39d99a20;
+  border-color: #50e6aa;
+}
+
+.answer.wrong {
+  background: #ff758520;
+  border-color: #ff8a9c;
+}
+
+.feedback {
+  display: none;
+  padding: 12px;
+  margin-top: 14px;
+  border-radius: 12px;
+  background: #ffffff0b;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.feedback.show { display: block; }
+
+.next {
+  display: none;
+  width: 100%;
+  margin-top: 15px;
+  padding: 13px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(90deg, #80e1ff, #aaa7ff);
+  color: #102344;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.next.show { display: block; }
+
+@media (max-width: 560px) {
+  .snow-grid { grid-template-columns: repeat(2, 1fr); }
+  .crystal { min-height: 130px; }
+  .stats { gap: 8px; }
+  .stat strong { font-size: 20px; }
+  .modal { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="snow" id="snow"></div>
+
+<main class="container">
+
+  <header class="top">
+    <div class="logo">❄ FROST <span>LAB</span></div>
+    <div class="pill">مشروع فصل ١/٢</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">THE CHEMISTRY OF ICE</div>
+
+    <h1>رحلة بلورة الثلج</h1>
+
+    <p class="subtitle">
+      خلف كل بلورة سر كيميائي!
+      اكتشفي أسرار الثلج، واختبري معلوماتك،
+      واجمعي النقاط لتصبحي عالمة الكيمياء.
+    </p>
+
+    <div class="credit">مشروع الكيمياء · فصل ١/٢</div>
+    <div class="credit">تم تصميم الموقع من قبل الطالبة <strong>وسن علي</strong></div>
+
+    <button class="start" id="startBtn">❄ بداية اللعبة</button>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <small>⭐ مجموع النقاط</small>
+      <strong id="score">0</strong>
+    </div>
+    <div class="stat">
+      <small>❄ البلورات المفتوحة</small>
+      <strong id="opened">0 / 8</strong>
+    </div>
+    <div class="stat">
+      <small>🧪 الإجابات الصحيحة</small>
+      <strong id="correct">0</strong>
+    </div>
+  </section>
+
+  <section class="progress-wrap">
+    <div class="progress-label">
+      <span>تقدّمك في الرحلة</span>
+      <span id="progressText">0%</span>
+    </div>
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </section>
+
+  <div class="section-heading" id="crystalsHeading">
+    <h2>❄ اختاري بلورة</h2>
+    <span>كل بلورة تخفي سؤالًا</span>
+  </div>
+
+  <section class="snow-grid" id="crystalGrid"></section>
+
+  <p class="hint">
+    💡 أجيبي عن الأسئلة الثمانية واكتشفي نتيجتك النهائية.
+  </p>
+
+  <footer class="footer">
+    ❄ تم تصميم الموقع من قبل الطالبة وسن علي ❄<br>
+    مشروع الكيمياء · فصل ١/٢
+  </footer>
+
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-top">
+      <span class="question-number" id="questionNumber">البلورة 1</span>
+      <button class="close" id="closeBtn" aria-label="إغلاق">×</button>
+    </div>
+
+    <div class="question-icon" id="questionIcon">❄️</div>
+    <h2 class="question" id="question"></h2>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <button class="next" id="nextBtn">العودة إلى البلورات ←</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const questions = [
+  {
+    q: "ما الصيغة الكيميائية للماء؟",
+    a: ["CO₂", "H₂O", "O₂", "NaCl"],
+    correct: 1,
+    info: "يتكوّن جزيء الماء من ذرتي هيدروجين وذرة أكسجين، وصيغته H₂O."
+  },
+  {
+    q: "ما الحالة الفيزيائية للماء في الثلج؟",
+    a: ["غازية", "سائلة", "صلبة", "بلازما"],
+    correct: 2,
+    info: "الثلج هو الماء في حالته الصلبة."
+  },
+  {
+    q: "ماذا يحدث للماء عندما يتجمّد؟",
+    a: ["يتحوّل إلى ثلج", "يتحوّل إلى أكسجين", "يختفي", "يتحوّل إلى ملح"],
+    correct: 0,
+    info: "يتحوّل الماء عند التجمّد من الحالة السائلة إلى الحالة الصلبة."
+  },
+  {
+    q: "عند أي درجة مئوية يتجمّد الماء النقي عادةً؟",
+    a: ["100°", "50°", "0°", "25°"],
+    correct: 2,
+    info: "يتجمّد الماء النقي عادةً عند صفر درجة مئوية تحت الضغط الجوي المعتاد."
+  },
+  {
+    q: "ما اسم العملية التي يتحوّل فيها الثلج إلى ماء؟",
+    a: ["التكاثف", "الانصهار", "التجمّد", "التسامي"],
+    correct: 1,
+    info: "الانصهار هو تحوّل المادة من الحالة الصلبة إلى الحالة السائلة."
+  },
+  {
+    q: "تجمّد الماء يُعدّ أي نوع من التغيّرات؟",
+    a: ["تغيّر كيميائي", "تغيّر فيزيائي", "احتراق", "تكوّن مادة جديدة"],
+    correct: 1,
+    info: "هذا تغيّر فيزيائي؛ فالماء يبقى H₂O ولا تتكوّن مادة جديدة."
+  },
+  {
+    q: "ما العملية التي يتحوّل فيها بخار الماء إلى سائل؟",
+    a: ["التبخّر", "الانصهار", "التكاثف", "التجمّد"],
+    correct: 2,
+    info: "التكاثف هو تحوّل المادة من الحالة الغازية إلى الحالة السائلة."
+  },
+  {
+    q: "ما نوع الروابط التي تساعد على تكوين بنية الثلج البلورية؟",
+    a: ["روابط هيدروجينية", "روابط فلزية", "روابط أيونية فقط", "لا توجد قوى"],
+    correct: 0,
+    info: "تساعد الروابط الهيدروجينية بين جزيئات الماء على تكوين البنية البلورية للثلج."
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+let opened = [];
+let score = 0;
+let correctCount = 0;
+let current = -1;
+let answered = false;
+let resultScreen = false;
+
+function createCrystals() {
+  $("crystalGrid").innerHTML = "";
+
+  questions.forEach((item, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "crystal";
+    btn.id = "crystal" + i;
+
+    btn.innerHTML = `
+      <span class="crystal-icon">❄</span>
+      <span class="crystal-label">البلورة ${String(i + 1).padStart(2, "0")}</span>
+      <span class="crystal-status">اضغطي للاكتشاف</span>
+    `;
+
+    btn.addEventListener("click", () => openQuestion(i));
+    $("crystalGrid").appendChild(btn);
+  });
+}
+
+function updateStats() {
+  $("score").textContent = score;
+  $("opened").textContent = opened.length + " / " + questions.length;
+  $("correct").textContent = correctCount;
+
+  const percent = Math.round(opened.length / questions.length * 100);
+  $("progressText").textContent = percent + "%";
+  $("progressBar").style.width = percent + "%";
+}
+
+function openQuestion(i) {
+  if (opened.includes(i)) return;
+
+  current = i;
+  answered = false;
+  resultScreen = false;
+
+  $("questionNumber").textContent =
+    "البلورة " + (i + 1) + " من " + questions.length;
+
+  $("questionIcon").textContent = "❄️";
+  $("question").textContent = questions[i].q;
+  $("answers").innerHTML = "";
+  $("feedback").className = "feedback";
+  $("feedback").textContent = "";
+
+  $("nextBtn").className = "next show";
+  $("nextBtn").textContent = "العودة إلى البلورات ←";
+
+  questions[i].a.forEach((answer, j) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "answer";
+    btn.textContent = ["أ", "ب", "ج", "د"][j] + " — " + answer;
+
+    btn.addEventListener("click", () => chooseAnswer(j));
+    $("answers").appendChild(btn);
+  });
+
+  $("overlay").classList.add("show");
+}
+
+function chooseAnswer(choice) {
+  if (answered || current < 0) return;
+  answered = true;
+
+  const item = questions[current];
+  const isCorrect = choice === item.correct;
+  const buttons = $("answers").querySelectorAll(".answer");
+
+  buttons.forEach((btn, j) => {
+    btn.disabled = true;
+
+    if (j === item.correct) btn.classList.add("correct");
+    if (j === choice && !isCorrect) btn.classList.add("wrong");
+  });
+
+  if (isCorrect) {
+    score += 10;
+    correctCount++;
+    $("feedback").textContent =
+      "✨ إجابة صحيحة! حصلتِ على 10 نقاط. " + item.info;
+  } else {
+    $("feedback").textContent =
+      "❄️ الإجابة الصحيحة: " + item.a[item.correct] + ". " + item.info;
+  }
+
+  $("feedback").className = "feedback show";
+  opened.push(current);
+
+  const crystal = $("crystal" + current);
+  crystal.classList.add("done");
+  crystal.disabled = true;
+  crystal.querySelector(".crystal-icon").textContent =
+    isCorrect ? "✨" : "💎";
+  crystal.querySelector(".crystal-status").textContent =
+    isCorrect ? "إجابة صحيحة +10" : "تم اكتشافها";
+
+  updateStats();
+
+  $("nextBtn").textContent =
+    opened.length === questions.length
+      ? "اكتشفي نتيجتك النهائية 🏆"
+      : "العودة إلى البلورات ←";
+}
+
+function showResult() {
+  resultScreen = true;
+
+  $("questionNumber").textContent = "نهاية الرحلة";
+  $("questionIcon").textContent = correctCount === 8 ? "🏆" : "❄️";
+  $("question").textContent = "أحسنتِ يا عالمة الكيمياء!";
+  $("answers").innerHTML = "";
+
+  let message;
+
+  if (correctCount === 8) {
+    message = "مذهل! حصلتِ على العلامة الكاملة. أنتِ نجمة مختبر الثلج! ✨";
+  } else if (correctCount >= 5) {
+    message = "أداء رائع! لديكِ أساس ممتاز في كيمياء الثلج. 💙";
+  } else {
+    message = "بداية جميلة! تعلّمي من الإجابات وحاولي مرة أخرى. ❄️";
+  }
+
+  $("feedback").textContent =
+    "نتيجتك: " + correctCount + " من 8 إجابات صحيحة، " +
+    score + " من 80 نقطة. " + message;
+
+  $("feedback").className = "feedback show";
+  $("nextBtn").textContent = "إعادة اللعب ↻";
+}
+
+function closeModal() {
+  $("overlay").classList.remove("show");
+}
+
+function restart() {
+  opened = [];
+  score = 0;
+  correctCount = 0;
+  current = -1;
+  answered = false;
+  resultScreen = false;
+
+  createCrystals();
+  updateStats();
+  closeModal();
+}
+
+function startGame() {
+  // إذا انتهت اللعبة، نبدأ من جديد
+  if (opened.length === questions.length) {
+    restart();
+  }
+
+  // الانتقال إلى منطقة البلورات
+  $("crystalsHeading").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  // فتح أول سؤال لم تتم الإجابة عنه
+  const firstUnopened = questions.findIndex(
+    (item, index) => !opened.includes(index)
+  );
+
+  if (firstUnopened !== -1) {
+    openQuestion(firstUnopened);
+  }
+}
+
+$("startBtn").addEventListener("click", startGame);
+$("closeBtn").addEventListener("click", closeModal);
+
+$("nextBtn").addEventListener("click", () => {
+  if (resultScreen) {
+    restart();
+    return;
+  }
+
+  if (!answered) {
+    closeModal();
+    return;
+  }
+
+  if (opened.length === questions.length) {
+    showResult();
+    return;
+  }
+
+  closeModal();
+});
+
+$("overlay").addEventListener("click", event => {
+  if (event.target === $("overlay")) closeModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeModal();
+});
+
+// إنشاء الثلج المتحرك
+const snow = $("snow");
+
+for (let i = 0; i < 35; i++) {
+  const flake = document.createElement("span");
+
+  flake.className = "flake";
+  flake.textContent = Math.random() > 0.5 ? "❄" : "·";
+  flake.style.left = Math.random() * 100 + "%";
+  flake.style.animationDuration = (7 + Math.random() * 13) + "s";
+  flake.style.animationDelay = (-Math.random() * 18) + "s";
+  flake.style.fontSize = (10 + Math.random() * 17) + "px";
+
+  snow.appendChild(flake);
+}
+
+createCrystals();
+updateStats();
+</script>
+
+</body>
+</html>
